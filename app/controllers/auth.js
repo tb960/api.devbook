@@ -20,6 +20,7 @@ const signup = (req, res, next) => {
 
     console.log(`The email is ${email}, and password is ${password}`);
 
+    console.log("hello");
     res.send("success");
 
     next();
