@@ -1,0 +1,7 @@
+node_modules
+mongo.yaml
+npm-debug.log
+.env.example
+.env.development
+.git
+.cache

@@ -8,8 +8,8 @@ const UserSchema = new mongoose.Schema(
         },
         role: {
             type: String,
-            enum: ['user', 'admin'],
-            default: 'user',
+            enum: ['USER', 'ADMIN'],
+            default: 'USER',
         },
         username: {
             type: String,
@@ -29,6 +29,11 @@ const UserSchema = new mongoose.Schema(
         },
         verification: {
             type: String,
+        },
+        userAccountStatus: {
+            type: String,
+            enum: ['NOTVERIFIED', 'VERIFIED', 'DISABLED'],
+            default: 'NOTVERIFIED',
         }
     }
 );
