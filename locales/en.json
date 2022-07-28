@@ -1,4 +1,8 @@
 {
+	"registration": {
+		"SUBJECT": "Please verify your email address",
+		"MESSAGE": "Hi, Thanks for creating a Magor Account. Please verify your email address by clicking the button below"
+	},
 	"Hello": "Hello",
 	"%s cat": {
 		"one": "%s cat",

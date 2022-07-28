@@ -1,4 +1,5 @@
 const axios = require('axios');
+const crypto = require('crypto');
 const ErrorResponse = require('../../utils/errorResponse');
 const User = require('../models/User');
 
@@ -34,9 +35,6 @@ const checkDuplicateEmail = async (req, res) => {
 	}
 }
 
-
-
-
 /**
  * Registers a new user in database
  * @param {Object} req - request object
@@ -47,11 +45,11 @@ const registerUser = async (req, res) => {
 	try {
 		const newUser = new User({
 			_id: req.gatewayUserID,
-			role: req.role,
+			role: req.role.toUpperCase(),
 			username: req.username,
 			email: req.email.toLowerCase(),
 			password: req.password,
-			//verification: uuid.v4(),
+			verification: crypto.randomUUID(),
 		});
 		const idExist = await User.exists({ _id: req.gatewayUserID });
 		const emailExist = await User.exists({ email: req.email });
@@ -69,8 +67,41 @@ const registerUser = async (req, res) => {
 	}
 };
 
+/**
+ * helper function to set user as verified in development mode
+ * @param {Object} req - request object
+ */
+ const setUserAccountStatus = async (data, res) => {
+	//return the user without password
+	let user = {
+		_id: data._id,
+		role: data.role,
+		username: data.username,
+		email: data.email,
+		verification: data.verification,
+		userAccountStatus: data.userAccountStatus,
+	};
+
+	if(process.env.NODE_ENV === 'production'){
+		try{
+			user = await User.findByIdAndUpdate(
+				{ _id: data._id },
+				{ userAccountStatus: 'VERIFIED' },
+				{ new: true}
+			);
+			return user;
+		} catch (err) {
+			const error = ErrorResponse.buildErrObject(422, err.message);
+    
+        	ErrorResponse.handleError(res, error);
+		}
+	}
+	return user;
+};
+
 
 module.exports = {
 	checkDuplicateEmail,
 	registerUser,
+	setUserAccountStatus,
 }

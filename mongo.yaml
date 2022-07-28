@@ -12,3 +12,9 @@ services:
             - mongodb
         ports:
           - 8081:8081
+    backend-server:
+        image: blydeteo/api-devbook:1.0
+        depends_on: 
+            - mongodb
+        ports:
+          - 3000:3000
