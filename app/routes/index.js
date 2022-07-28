@@ -2,8 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 
+// router.get('/de', (req, res, next)=>{
+//     var greeting = res.__n('%s cat', 3);
+//     res.send(greeting);
+//     next();
+// })
+
 router.get('/', (req, res, next)=>{
-    res.send('Hello World!');
+    res.send("You shouldn't reach here!");
     next();
 })
 

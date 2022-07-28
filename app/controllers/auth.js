@@ -1,30 +1,52 @@
-const User = require('../models/User');
+// import packages
+const { matchedData } = require('express-validator');
+
+// import models
+
+//import services
+const { checkDuplicateEmail, registerUser } = require('../services/auth');
+
+// import other
+const ErrorResponse = require('../../utils/errorResponse');
 
 
-const signup = (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
+/**
+ * Register function called by route
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ */
+const register = async (req, res) => {
+    try {
+        // Gets locale from header 'Accept-Language'
+        // const locale = req.getLocale();
+        req = matchedData(req);
+        const gatewayRegisteredData = await checkDuplicateEmail(req, res);
+        if(gatewayRegisteredData){
+            req.gatewayUserID = gatewayRegisteredData.data.user._id;
+            req.role = gatewayRegisteredData.data.user.role;
+            // register user to local database
+			const userInfo = await registerUser(req, res);
 
-    const newUser = new User({
-        email : req.body.email,
-        password : req.body.password
-    })
-
-    newUser.save()
-        .then((item) => {
-            console.log(`${item} saved to database`);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-
-    console.log(`The email is ${email}, and password is ${password}`);
-
-    res.send("success");
-
-    next();
+            if(userInfo){
+                //build success response object
+                const successPayload = { 
+                    token: 'unavailable', 
+                    user: userInfo 
+                };
+                //build handleResponse
+			    res.status(201).json({
+                    statusCode: 201,
+                    ...successPayload,
+                }); //better success object reponse in utils
+            }
+        }
+    } catch(err) {
+        const error = ErrorResponse.buildErrObject(422, err.message);
+    
+        ErrorResponse.handleError(res, error);
+    }
 }
 
 module.exports = {
-    signup,
+    register,
 }
