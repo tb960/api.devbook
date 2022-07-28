@@ -1,18 +1,21 @@
+// import npm packages
 const express = require('express');
 const router = express.Router();
+const trimRequest = require('trim-request');
 
-const multer = require('multer');
 
-// const { signupGet, signupPost } = require('../controllers/auth');
+// import validators
+const validators = require('../middleware/validate.auth');
 
-const { signup } = require('../controllers/auth');
 
-//router.get('/signup', signupGet);
-router.post('/signup', multer().none(), signup);
+// import controllers
+const { register } = require('../controllers/auth');
 
-// router.get('/login', (req, res, next) => {
-//     console.log('This is a login route');
-//     res.send("Success login route response");
-// });
+
+// import middlewares/ utils
+// import others
+
+
+router.post('/register', trimRequest.all, validators.validateRegisterRules(), validators.validateRegister, register);
 
 module.exports = router;
