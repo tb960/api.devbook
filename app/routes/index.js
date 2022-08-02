@@ -9,8 +9,8 @@ const router = express.Router();
 // })
 
 router.get('/', (req, res, next)=>{
-    res.send("You shouldn't reach here!");
-    next();
+	res.send('You shouldn\'t reach here!');
+	next();
 })
 
 // router.get('/:id', (req, res)=>{

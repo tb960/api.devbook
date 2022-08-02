@@ -7,7 +7,7 @@ const i18n = require('i18n');
 const app = express();
 
 // Setup express server port from ENV, default: 3000
-const port = process.env.PORT || 3000 ; 
+const port = process.env.PORT || 3000 ;
 
 // i18n
 i18n.configure({
@@ -20,8 +20,8 @@ app.use(i18n.init);
 
 app.use(express.json() );       // to support JSON-encoded bodies
 app.use(express.urlencoded({     // to support URL-encoded bodies
-  extended: true
-})); 
+	extended: true
+}));
 app.use(multer().none());       // to support multipart/form-data bodies
 
 app.use(cors());
@@ -33,16 +33,16 @@ app.use('/', require('./app/routes/index'));
 
 //error handling on listening on port
 app.listen(port, ()=>{
-    //console.log(`App listening on port ${port}`);
-    if (process.env.NODE_ENV !== 'test') {
-      // Prints initialization
-      console.log('****************************');
-      console.log('*    Starting Server');
-      console.log(`*    Server Port: ${process.env.PORT || 3000}`);
-      console.log(`*    NODE_ENV: ${process.env.NODE_ENV}`);
-      console.log(`*    Database: MongoDB`);
-      //console.log(dbStatus);
-    }
+	//console.log(`App listening on port ${port}`);
+	if (process.env.NODE_ENV !== 'test') {
+		// Prints initialization
+		console.log('****************************');
+		console.log('*    Starting Server');
+		console.log(`*    Server Port: ${process.env.PORT || 3000}`);
+		console.log(`*    NODE_ENV: ${process.env.NODE_ENV}`);
+		console.log(`*    Database: MongoDB`);
+		//console.log(dbStatus);
+	}
 });
 
 //app.listen(app.get('port'), '0.0.0.0');  //need error handling and console log on this one
@@ -69,7 +69,7 @@ initMongoDB();
 //     );
 //     console.log('MongoDB Connected:');
 //     console.log(conn);
-//   } 
+//   }
 //   catch (error) {
 //     console.log("Not Connected to Database ERROR! ", error);
 //     //console.log(error)

@@ -1,29 +1,55 @@
 /**
- * Builds error object
+ * Error handler class
+ * @param {string} errorName - error name
+ * @param {number} httpStatusCode - error code
+ * @param {string} message - error message
+ *  * @param {string} description - error description
+ */
+class ErrorHandler extends Error {
+	constructor(errorName, httpStatusCode, description, message){
+		super(message);
+		this.errorName = errorName;
+		this.httpStatusCode = httpStatusCode;
+		this.description = description;
+	}
+}
+
+/**
+ * Builds error object for middleware function
  * @param {number} code - error code
  * @param {string} message - error text
  */
- const buildErrObject = (code, message) => {
+const buildErrObject = (errorName, httpStatusCode, description, message) => {
 	return {
-		code,
+		errorName,
+		httpStatusCode,
+		description,
 		message,
 	};
 };
+
 
 /**
  * Handles error by printing to console in development env and builds and sends an error response
  * @param {Object} res - response object
  * @param {Object} err - error object
  */
- const handleError = (res, err) => {
+const handleError = (res, err) => {
 	// Prints error in console
 	if (process.env.NODE_ENV === 'development') {
+		// console.log(err.name);
+		// console.log(err.httpStatusCode);
+		// console.log(err.description);
+		// console.log('The next line is error message:');
+		// console.log(err.message);
 		console.log(err);
 	}
 	// Sends error to user
-	res.status(err.code).json({
-		statusCode: err.code,
-		message: err.message,
+	res.status(err.httpStatusCode).json({
+		Error: err.httpStatusCode,
+		ErrorName: err.errorName,
+		Message: err.message,
+		Description: err.description,
 	});
 };
 
@@ -45,6 +71,7 @@
 
 
 module.exports = {
+	ErrorHandler,
 	buildErrObject,
 	handleError,
 }

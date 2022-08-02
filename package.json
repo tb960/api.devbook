@@ -1,12 +1,13 @@
 {
   "name": "devbook",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend for magor 2022",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=development node app.js",
-    "dev": "NODE_ENV=development nodemon app.js"
+    "dev": "NODE_ENV=development nodemon app.js",
+    "lint": "eslint --fix --config .eslintrc.json \"**/*.js\""
   },
   "author": "Boon Khang",
   "license": "ISC",
@@ -24,6 +25,7 @@
     "trim-request": "^1.0.6"
   },
   "devDependencies": {
+    "eslint": "^8.20.0",
     "nodemon": "^2.0.18"
   }
 }

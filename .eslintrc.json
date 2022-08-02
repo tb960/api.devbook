@@ -1,0 +1,44 @@
+{
+    "env": {
+        "node": true,
+        "browser": true
+    },
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "rules": {
+        "arrow-body-style": ["error", "always"],
+        "block-spacing" : ["error", "always"],
+        "camelcase": ["error", {
+            "properties": "always"
+        }],
+        "comma-style": ["error", "last"],
+        "curly": ["error", "all"],
+        "eqeqeq": ["error", "always"],
+        "eol-last": ["warn"],
+        "indent": ["error", "tab"],
+        "linebreak-style": ["warn", "unix"],
+        "no-dupe-keys": ["error"],
+        "no-duplicate-case": ["error"],
+        "no-labels": ["error"],
+        "no-undef": "error",
+        "no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
+        "no-redeclare": ["warn"],
+        "no-return-assign": ["error", "always"],
+        "no-trailing-spaces": ["error"],
+        "no-unreachable": ["warn"],
+        "no-magic-numbers": ["off"],
+        "quotes": [
+            "warn",
+            "single",
+            {
+              "avoidEscape": false,
+              "allowTemplateLiterals": true
+            }
+          ]
+        
+
+
+
+    }
+}

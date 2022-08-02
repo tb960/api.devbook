@@ -15,7 +15,13 @@ const authController = require('../controllers/authController');
 // import middlewares/ utils
 // import others
 
-
+/*
+ * POST /register
+ */
 router.post('/register', trimRequest.all, validators.validateRegisterRules(), validators.validateRegister, authController.register);
+/*
+ * POST /login
+ */
+router.post('/login', trimRequest.all, validators.validateLoginRules(), validators.validateLogin, authController.login);
 
 module.exports = router;
