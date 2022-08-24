@@ -48,7 +48,9 @@ const initMongoDB = () => {
 	mongoose.connection.on('disconnected', connectDB);
 }
 
-module.exports = initMongoDB;
+module.exports = {
+	initMongoDB
+};
 
 
 //todoList,

@@ -1,11 +1,11 @@
 const i18n = require('i18n');
-const ErrorResponse = require('../../utils/errorResponse');
 const nodemailer = require('nodemailer');
 
 
 //public function
 /**
  * Sends register verification email
+ * author: Boon Khang
  * @param {string} locale - locale
  * @param {Object} user - user object
  */
@@ -13,19 +13,39 @@ const sendRegistrationEmail = (locale, user) => {
 	i18n.setLocale(locale);
 	const subject = i18n.__('registration.SUBJECT');
 	const htmlMessage = i18n.__('registration.MESSAGE');
-	prepareToSendEmail(user, subject, htmlMessage);
+	const options = {
+		type: 'registration',
+		verification: user.verification,
+	}
+	prepareToSendEmail(user, subject, htmlMessage, options);
 }
 
-
+/**
+ * Sends forgot password email
+ * author: Boon Khang
+ * @param {string} locale - locale
+ * @param {Object} data - data object
+ */
+const sendForgotPasswordEmail = (locale, user, data) => {
+	i18n.setLocale(locale);
+	const subject = i18n.__('forgotPassword.SUBJECT');
+	const htmlMessage = i18n.__('forgotPassword.MESSAGE');
+	const options = {
+		type: 'forgotPassword',
+		verification: data.verification,
+	}
+	prepareToSendEmail(user, subject, htmlMessage, options);
+}
 
 //private function
 /**
  * Prepares to send email
+ * author: Boon Khang
  * @param {string} user - user object
  * @param {string} subject - subject
  * @param {string} htmlMessage - html message
  */
-const prepareToSendEmail = async (user, subject, htmlMessage) => {
+const prepareToSendEmail = async (user, subject, htmlMessage, options) => {
 	user = {
 		username: user.username,
 		email: user.email,
@@ -36,6 +56,7 @@ const prepareToSendEmail = async (user, subject, htmlMessage) => {
 		user,
 		subject,
 		htmlMessage,
+		options,
 	};
 	//in development mode, we don't need to send email
 	//only in production mode then we need to send email, we can manually change the code to test for development
@@ -80,10 +101,24 @@ const prepareToSendEmail = async (user, subject, htmlMessage) => {
 
 /**
  * Sends email
+ * author: Boon Khang
  * @param {Object} data - data
  */
 const sendEmail = async (data) => {
-	const { user, subject, htmlMessage } = data;
+	const { user, subject, htmlMessage, options } = data;
+	//the url need to be frontend for forgot password route
+	//use a switch case here to identify the verification email or reset password email
+	let url =  '';
+	switch(options.type){
+	case 'register':
+		url = `http://localhost:3000/auth/verify/${options.verification}`;
+		break;
+	case 'forgotPassword':
+		url = `http://localhost:3000/auth/resetPassword/${options.verification}`;
+	}
+	//experimental and change afterward
+	const testMessage = `${htmlMessage} and the verify url is: ${url}`;
+	//experimental
 	const emails = ['khangtbk@gmail.com'];
 	const transportAuth = {
 		host: process.env.EMAIL_SMTP_SERVER,
@@ -99,7 +134,7 @@ const sendEmail = async (data) => {
 			from: `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM_ADDRESS}>`,
 			to: emails,
 			subject: subject,
-			text: htmlMessage,
+			text: testMessage,
 		}
 		const mailStatus = await transporter.sendMail(mailOptions);
 		if(!mailStatus){
@@ -126,4 +161,5 @@ const sendEmail = async (data) => {
 
 module.exports = {
 	sendRegistrationEmail,
+	sendForgotPasswordEmail,
 }

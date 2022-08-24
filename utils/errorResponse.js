@@ -1,9 +1,10 @@
 /**
  * Error handler class
+ * author: Boon Khang
  * @param {string} errorName - error name
  * @param {number} httpStatusCode - error code
  * @param {string} message - error message
- *  * @param {string} description - error description
+ * @param {string} description - error description
  */
 class ErrorHandler extends Error {
 	constructor(errorName, httpStatusCode, description, message){
@@ -16,6 +17,7 @@ class ErrorHandler extends Error {
 
 /**
  * Builds error object for middleware function
+ * author: Boon Khang
  * @param {number} code - error code
  * @param {string} message - error text
  */
@@ -31,6 +33,7 @@ const buildErrObject = (errorName, httpStatusCode, description, message) => {
 
 /**
  * Handles error by printing to console in development env and builds and sends an error response
+ * author: Boon Khang
  * @param {Object} res - response object
  * @param {Object} err - error object
  */

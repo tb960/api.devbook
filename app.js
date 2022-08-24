@@ -1,10 +1,15 @@
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}`});
+global.__basedir = __dirname;
 const express = require('express');
 const cors = require('cors');
-const multer = require('multer');
-const initMongoDB = require('./config/mongo');
+const passport = require('passport');
+const configMongoDB = require('./config/mongo');
+const configAzure = require('./config/azure');
 const i18n = require('i18n');
 const app = express();
+
+
+const seeder = require('./seedData');
 
 // Setup express server port from ENV, default: 3000
 const port = process.env.PORT || 3000 ;
@@ -22,9 +27,9 @@ app.use(express.json() );       // to support JSON-encoded bodies
 app.use(express.urlencoded({     // to support URL-encoded bodies
 	extended: true
 }));
-app.use(multer().none());       // to support multipart/form-data bodies
 
 app.use(cors());
+app.use(passport.initialize());
 
 
 app.use('/', require('./app/routes/index'));
@@ -47,7 +52,9 @@ app.listen(port, ()=>{
 
 //app.listen(app.get('port'), '0.0.0.0');  //need error handling and console log on this one
 
-initMongoDB();
+configMongoDB.initMongoDB();
+configAzure.initAzure();
+
 
 
 

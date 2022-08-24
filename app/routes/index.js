@@ -23,6 +23,7 @@ router.get('/', (req, res, next)=>{
 // });
 
 router.use('/auth', require('./auth'));
+router.use('/recordings', require('./recording'));
 
 module.exports = router;
 
